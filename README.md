@@ -6,4 +6,4 @@
 - Instructions on cooking with food image
 - Record your daily nutritional intake
 
-To run the demo: `python3 demo.py`
+To run the demo: `python3 group6demo.py`
