@@ -4,20 +4,40 @@ import csv
 import bs4
 import pandas as pd
 
+"""
+This file is to scrape needed nutrient for people from website. 
+"""
+
 NUT_SET = set(['Protein', 'Fibre', 'Vitamin A', 'Vitamin C', 'Calcium', 'Iron', 'Sodium'])
 
 FORM_BUILD_ID = ""
 
 def write_raw(soup):
+    """Write raw data file.
+    Arguments:
+        fname {string} -- file to be loaded
+        soup {BeautifulSoup} -- BeautifulSoup object loaded with the html page text
+    """
     data = soup.findAll("div", {"class": "field field-name-field-nutrient-answer field-type-computed field-label-hidden"})[0]
     with open("nutrient_need_raw.txt", "a+") as f:
         f.write(data.text+'\n')
 
 def write_clean(dic):
+    """Write clean data to file.
+    Arguments:
+        dic {dictionary} -- dictionary contains all the clean data
+    """
     df = pd.DataFrame(data=dic)
     df.to_csv("nutrient_need_clean.csv", encoding='utf-8', index=False)
 
 def convert_clean(soup, gender, age, dic):
+    """Convert raw data to clean data.
+    Arguments:
+        soup {BeautifulSoup} -- BeautifulSoup object loaded with the html page text
+        gender {String} -- gender to search
+        age {String} -- age to search
+        dic {dictionary} -- dictionary contains the clean data
+    """
     dic['age'].append(age)
     dic['gender'].append(gender)
     tag_lst = soup.findAll("tr",{"class":"even"})
@@ -36,6 +56,14 @@ def convert_clean(soup, gender, age, dic):
     return dic
 
 def crawl_and_write(gender, age, dic):
+    """Crawl and write scraped data to dictionary.
+    Arguments:
+        gender {String} -- gender to search
+        age {String} -- age to search
+        dic {dictionary} -- dictionary contains the clean data
+    Returns:
+        dic {dictionary} -- dictionary contains the clean data
+    """
     url = 'https://www.eatforhealth.gov.au/node/add/calculator-nutrients'
     post_data = {'field_nutrients_gender[und]':gender, 'field_nutrients_age[und][0][value]':age,
     'field_nutrients_age_type[und]':'years','form_id':'calculator_nutrients_node_form',

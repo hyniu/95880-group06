@@ -1,10 +1,19 @@
 import csv
 import json
 
+"""
+This file is to clean the raw nutrient data. 
+"""
+
 ELEMENT_TUPLE = ('nf_protein','nf_dietary_fiber','nf_vitamin_a_dv','nf_vitamin_c_dv','nf_calcium_dv', 'nf_iron_dv',
      'nf_sodium','nf_calories','nf_serving_weight_grams',"key_ingredient")
 
 def get_nutrient_clean(fclean, fraw):
+    """Extract clean data and save to file.
+    Arguments:
+        fclean {string} -- file to be saved
+        fraw {string} -- file to be clean
+    """
     nutrient_clean = open(fclean, 'w')
     csvwriter = csv.writer(nutrient_clean)
     i = 0
